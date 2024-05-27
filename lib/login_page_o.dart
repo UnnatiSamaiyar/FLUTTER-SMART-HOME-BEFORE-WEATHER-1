@@ -41,30 +41,42 @@ class _LoginPageState extends State<LoginPage> {
       String url =
           "https://api.airtable.com/v0/appn3jOUjHv0nHMRY/Tasks?filterByFormula=AND(username%3D%22$enteredUsername%22%2C+password%3D%22$enteredPassword%22)";
       Map<String, String> headers = {
-        "Authorization": "Bearer patXIJ9NMoiZYgfEL.7fa08205b7b65171b762727516cd80e9ea3aeff226e71012d6dfb0360162f7c2",
+        "Authorization":
+            "Bearer patXIJ9NMoiZYgfEL.7fa08205b7b65171b762727516cd80e9ea3aeff226e71012d6dfb0360162f7c2",
       };
 
-      http.Response response =
-          await http.get(Uri.parse(url), headers: headers);
+      http.Response response = await http.get(Uri.parse(url), headers: headers);
 
       if (response.statusCode == 200) {
         Map<String, dynamic> result = json.decode(response.body);
         List records = result['records'];
 
         if (records.isNotEmpty) {
-          // Extract the 'tdsApi' value from the first record (assuming there's only one)
-          String fetchedTdsApi = records[0]['fields']['tdsapi'];
-          String fetchedTemperatureApi = records[0]['fields']['temperatureapi'];
-          String fetchedHumidityApi = records[0]['fields']['humidityapi'];
-          String fetchedPhApi = records[0]['fields']['phapi'];
-          String fetchedbaseurlApi = records[0]['fields']['baseurl'];
-          String fetchedtokenApi = records[0]['fields']['token'];
+          // Extract the API values from the first record (assuming there's only one)
+          Map<String, dynamic> fields = records[0]['fields'];
+
+          // Safely fetch the API fields with default values for null or empty fields
+          String fetchedTdsApi = fields['tdsapi'] ?? '';
+          String fetchedTemperatureApi = fields['temperatureapi'] ?? '';
+          String fetchedHumidityApi = fields['humidityapi'] ?? '';
+          String fetchedPhApi = fields['phapi'] ?? '';
+          String fetchedbaseurlApi = fields['baseurl'] ?? '';
+          String fetchedtokenApi = fields['token'] ?? '';
+          String fetchedwindspeedapi = fields['windspeedapi'] ?? '';
+          String fetchedraincountapi = fields['raincountapi'] ?? '';
+          String fetchedwinddirectionapi = fields['winddirectionapi'] ?? '';
+          String fetchediaqapi = fields['iaqapi'] ?? '';
+          String fetchedco2api = fields['co2api'] ?? '';
+          String fetchedbreathvocapi = fields['breathvocapi'] ?? '';
+          String fetchedpressureapi = fields['pressureapi'] ?? '';
+          String fetcheddewpointapi = fields['dewpointapi'] ?? '';
 
           // Save username and password to SharedPreferences
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString('username', enteredUsername);
           await prefs.setString('password', enteredPassword);
 
+          // Navigate to HomePage with the fetched API values
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -75,6 +87,14 @@ class _LoginPageState extends State<LoginPage> {
                 phApi: fetchedPhApi,
                 baseurlApi: fetchedbaseurlApi,
                 tokenApi: fetchedtokenApi,
+                windspeedapi: fetchedwindspeedapi,
+                raincountapi: fetchedraincountapi,
+                winddirectionapi: fetchedwinddirectionapi,
+                iaqapi: fetchediaqapi,
+                co2api: fetchedco2api,
+                breathvocapi: fetchedbreathvocapi,
+                pressureapi: fetchedpressureapi,
+                dewpointapi: fetcheddewpointapi,
               ),
             ),
           );
