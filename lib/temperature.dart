@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:lottie/lottie.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -59,6 +61,7 @@ class TemperaturePage extends StatefulWidget {
   final String breathvocapi;
   final String pressureapi;
   final String dewpointapi;
+  
 
   @override
   _TemperaturePageState createState() => _TemperaturePageState();
@@ -81,6 +84,14 @@ class _TemperaturePageState extends State<TemperaturePage> {
   double breathvoc = 0;
   double pressure = 0;
   double dewpoint = 0;
+  double maximumWindspeed = 100;
+  double maximumRaincount = 500;
+  double maximumWinddirection = 360;
+  double maximumIAQ = 500;
+  double maximumCO2 = 2000;
+  double maximumBreathVOC = 100;
+  double maximumPressure = 12000000;
+  double maximumDewpoint = 50;
 
   double tdsATime = 0;
   double tdsBTime = 0;
@@ -107,7 +118,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
       if (widget.temperatureApi.isNotEmpty) {
         final temperatureResponse =
             await http.get(Uri.parse(widget.temperatureApi));
-        if (temperatureResponse.statusCode == 200) {
+        if (temperatureResponse.statusCode == 200 &&
+            _isValidJson(temperatureResponse.body)) {
           final temperatureData = json.decode(temperatureResponse.body);
           final fetchedTemperature = double.parse(temperatureData.toString());
           setState(() {
@@ -118,7 +130,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
       if (widget.tdsApi.isNotEmpty) {
         final tdsResponse = await http.get(Uri.parse(widget.tdsApi));
-        if (tdsResponse.statusCode == 200) {
+        if (tdsResponse.statusCode == 200 && _isValidJson(tdsResponse.body)) {
           final tdsData = json.decode(tdsResponse.body);
           final fetchedTDS = double.parse(tdsData.toString());
           setState(() {
@@ -129,7 +141,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
       if (widget.humidityApi.isNotEmpty) {
         final humidityResponse = await http.get(Uri.parse(widget.humidityApi));
-        if (humidityResponse.statusCode == 200) {
+        if (humidityResponse.statusCode == 200 &&
+            _isValidJson(humidityResponse.body)) {
           final humidityData = json.decode(humidityResponse.body);
           final fetchedHumidity = double.parse(humidityData.toString());
           setState(() {
@@ -140,7 +153,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
       if (widget.phApi.isNotEmpty) {
         final phResponse = await http.get(Uri.parse(widget.phApi));
-        if (phResponse.statusCode == 200) {
+        if (phResponse.statusCode == 200 && _isValidJson(phResponse.body)) {
           final phData = json.decode(phResponse.body);
           final fetchedPH = double.parse(phData.toString());
           setState(() {
@@ -148,10 +161,12 @@ class _TemperaturePageState extends State<TemperaturePage> {
           });
         }
       }
+
       if (widget.windspeedapi.isNotEmpty) {
         final windspeedResponse =
             await http.get(Uri.parse(widget.windspeedapi));
-        if (windspeedResponse.statusCode == 200) {
+        if (windspeedResponse.statusCode == 200 &&
+            _isValidJson(windspeedResponse.body)) {
           final windspeedData = json.decode(windspeedResponse.body);
           final fetchedwindspeed = double.parse(windspeedData.toString());
           setState(() {
@@ -159,10 +174,12 @@ class _TemperaturePageState extends State<TemperaturePage> {
           });
         }
       }
+
       if (widget.raincountapi.isNotEmpty) {
         final raincountResponse =
             await http.get(Uri.parse(widget.raincountapi));
-        if (raincountResponse.statusCode == 200) {
+        if (raincountResponse.statusCode == 200 &&
+            _isValidJson(raincountResponse.body)) {
           final raincountData = json.decode(raincountResponse.body);
           final fetchedraincount = double.parse(raincountData.toString());
           setState(() {
@@ -170,21 +187,24 @@ class _TemperaturePageState extends State<TemperaturePage> {
           });
         }
       }
+
       if (widget.winddirectionapi.isNotEmpty) {
         final winddirectionResponse =
-            await http.get(Uri.parse(widget.raincountapi));
-        if (winddirectionResponse.statusCode == 200) {
+            await http.get(Uri.parse(widget.winddirectionapi));
+        if (winddirectionResponse.statusCode == 200 &&
+            _isValidJson(winddirectionResponse.body)) {
           final winddirectionData = json.decode(winddirectionResponse.body);
-          final fetchedwinddirection = double.parse(winddirectionData.toString());
+          final fetchedwinddirection =
+              double.parse(winddirectionData.toString());
           setState(() {
             winddirection = fetchedwinddirection;
           });
         }
       }
+
       if (widget.iaqapi.isNotEmpty) {
-        final iaqResponse =
-            await http.get(Uri.parse(widget.raincountapi));
-        if (iaqResponse.statusCode == 200) {
+        final iaqResponse = await http.get(Uri.parse(widget.iaqapi));
+        if (iaqResponse.statusCode == 200 && _isValidJson(iaqResponse.body)) {
           final iaqData = json.decode(iaqResponse.body);
           final fetchediaq = double.parse(iaqData.toString());
           setState(() {
@@ -192,10 +212,10 @@ class _TemperaturePageState extends State<TemperaturePage> {
           });
         }
       }
+
       if (widget.co2api.isNotEmpty) {
-        final co2Response =
-            await http.get(Uri.parse(widget.co2api));
-        if (co2Response.statusCode == 200) {
+        final co2Response = await http.get(Uri.parse(widget.co2api));
+        if (co2Response.statusCode == 200 && _isValidJson(co2Response.body)) {
           final co2Data = json.decode(co2Response.body);
           final fetchedco2 = double.parse(co2Data.toString());
           setState(() {
@@ -203,10 +223,12 @@ class _TemperaturePageState extends State<TemperaturePage> {
           });
         }
       }
+
       if (widget.breathvocapi.isNotEmpty) {
         final breathvocResponse =
             await http.get(Uri.parse(widget.breathvocapi));
-        if (breathvocResponse.statusCode == 200) {
+        if (breathvocResponse.statusCode == 200 &&
+            _isValidJson(breathvocResponse.body)) {
           final breathvocData = json.decode(breathvocResponse.body);
           final fetchedbreathvoc = double.parse(breathvocData.toString());
           setState(() {
@@ -214,10 +236,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
           });
         }
       }
+
       if (widget.pressureapi.isNotEmpty) {
-        final pressureResponse =
-            await http.get(Uri.parse(widget.pressureapi));
-        if (pressureResponse.statusCode == 200) {
+        final pressureResponse = await http.get(Uri.parse(widget.pressureapi));
+        if (pressureResponse.statusCode == 200 &&
+            _isValidJson(pressureResponse.body)) {
           final pressureData = json.decode(pressureResponse.body);
           final fetchedpressure = double.parse(pressureData.toString());
           setState(() {
@@ -225,10 +248,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
           });
         }
       }
+
       if (widget.dewpointapi.isNotEmpty) {
-        final dewpointResponse =
-            await http.get(Uri.parse(widget.dewpointapi));
-        if (dewpointResponse.statusCode == 200) {
+        final dewpointResponse = await http.get(Uri.parse(widget.dewpointapi));
+        if (dewpointResponse.statusCode == 200 &&
+            _isValidJson(dewpointResponse.body)) {
           final dewpointData = json.decode(dewpointResponse.body);
           final fetcheddewpoint = double.parse(dewpointData.toString());
           setState(() {
@@ -241,6 +265,15 @@ class _TemperaturePageState extends State<TemperaturePage> {
         print('Error: $error');
       }
     }
+  }
+
+  bool _isValidJson(String jsonStr) {
+    try {
+      json.decode(jsonStr);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 
   Future<void> _updateApi(String pin, double value) async {
@@ -261,6 +294,10 @@ class _TemperaturePageState extends State<TemperaturePage> {
         print('Error updating API: $error');
       }
     }
+  }
+
+  double _clampValue(double value, double max) {
+    return value > max ? max : value;
   }
 
   @override
@@ -310,14 +347,12 @@ class _TemperaturePageState extends State<TemperaturePage> {
                               CircularPercentIndicator(
                                 radius: 180,
                                 lineWidth: 14,
-                                percent: temperature > 0
-                                    ? temperature / maximumTemperature
-                                    : 0,
+                                percent: _clampValue(
+                                        temperature, maximumTemperature) /
+                                    maximumTemperature,
                                 progressColor: Colors.indigo,
                                 center: Text(
-                                  temperature > 0
-                                      ? '$temperature\u00B0'
-                                      : 'Connect Sensor',
+                                  temperature > 0 ? '$temperature\u00B0' : '',
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
@@ -345,10 +380,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
                               CircularPercentIndicator(
                                 radius: 180,
                                 lineWidth: 14,
-                                percent: tds > 0 ? tds / maximumTDS : 0,
+                                percent:
+                                    _clampValue(tds, maximumTDS) / maximumTDS,
                                 progressColor: Colors.orange,
                                 center: Text(
-                                  tds > 0 ? '$tds TDS' : 'Connect Sensor',
+                                  tds > 0 ? '$tds TDS' : '',
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
@@ -379,14 +415,12 @@ class _TemperaturePageState extends State<TemperaturePage> {
                               CircularPercentIndicator(
                                 radius: 180,
                                 lineWidth: 14,
-                                percent: humidity > 0
-                                    ? humidity / maximumHumidity
-                                    : 0,
+                                percent:
+                                    _clampValue(humidity, maximumHumidity) /
+                                        maximumHumidity,
                                 progressColor: Colors.green,
                                 center: Text(
-                                  humidity > 0
-                                      ? '$humidity %'
-                                      : 'Connect Sensor',
+                                  humidity > 0 ? '$humidity %' : '',
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
@@ -414,10 +448,10 @@ class _TemperaturePageState extends State<TemperaturePage> {
                               CircularPercentIndicator(
                                 radius: 180,
                                 lineWidth: 14,
-                                percent: ph > 0 ? ph / maximumPH : 0,
+                                percent: _clampValue(ph, maximumPH) / maximumPH,
                                 progressColor: Colors.blue,
                                 center: Text(
-                                  ph > 0 ? '$ph pH' : 'Connect Sensor',
+                                  ph > 0 ? '$ph pH' : '',
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
@@ -439,6 +473,247 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       ],
                     ),
                     const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              CircularPercentIndicator(
+                                radius: 180,
+                                lineWidth: 14,
+                                percent:
+                                    _clampValue(windspeed, maximumWindspeed) /
+                                        maximumWindspeed,
+                                progressColor: Colors.green,
+                                center: Text(
+                                  humidity > 0 ? '$windspeed  %' : '',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: windspeed >= 0
+                                        ? Colors.black
+                                        : Colors.red,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                windspeed >= 0 ? 'Wind-speed ' : '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              CircularPercentIndicator(
+                                radius: 180,
+                                lineWidth: 14,
+                                percent: _clampValue(raincount, maximumPH) /
+                                    maximumPH,
+                                progressColor: Colors.blue,
+                                center: Text(
+                                  raincount >= 0
+                                      ? '$raincount  Rain-count '
+                                      : '',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    color: ph >= 0 ? Colors.black : Colors.red,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                raincount > 0 ? 'Rain-count' : '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              CircularPercentIndicator(
+                                radius: 180,
+                                lineWidth: 14,
+                                percent:
+                                    _clampValue(iaq, maximumIAQ) / maximumIAQ,
+                                progressColor: Colors.indigo,
+                                center: Text(
+                                  iaq >= 0 ? '$iaq %' : '',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: iaq >= 0 ? Colors.black : Colors.red,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                iaq >= 0 ? 'IAQ ' : '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.indigo,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              CircularPercentIndicator(
+                                radius: 180,
+                                lineWidth: 14,
+                                percent:
+                                    _clampValue(co2, maximumCO2) / maximumCO2,
+                                progressColor: Colors.orange,
+                                center: Text(
+                                  co2 >= 0 ? '$co2  ppm' : '',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: co2 >= 0 ? Colors.black : Colors.red,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                co2 > 0 ? 'CO2 ' : '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              CircularPercentIndicator(
+                                radius: 180,
+                                lineWidth: 14,
+                                percent:
+                                    _clampValue(breathvoc, maximumBreathVOC) /
+                                        maximumBreathVOC,
+                                progressColor: Colors.indigo,
+                                center: Text(
+                                  breathvoc >= 0 ? '$breathvoc  %' : '',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: breathvoc >= 0
+                                        ? Colors.black
+                                        : Colors.red,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                breathvoc >= 0 ? 'BreathVoc ' : '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.indigo,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              CircularPercentIndicator(
+                                radius: 180,
+                                lineWidth: 14,
+                                percent:
+                                    _clampValue(pressure, maximumPressure) /
+                                        maximumPressure,
+                                progressColor: Colors.orange,
+                                center: Text(
+                                  pressure >= 0 ? '$pressure Pa' : '',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: co2 >= 0 ? Colors.black : Colors.red,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                pressure > 0 ? 'Pressure ' : '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              CircularPercentIndicator(
+                                radius: 180,
+                                lineWidth: 14,
+                                percent:
+                                    _clampValue(dewpoint, maximumDewpoint) /
+                                        maximumDewpoint,
+                                progressColor: Colors.indigo,
+                                center: Text(
+                                  dewpoint >= 0 ? '$dewpoint   %' : '',
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.bold,
+                                    color: dewpoint >= 0
+                                        ? Colors.black
+                                        : Colors.red,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                dewpoint >= 0 ? 'Dewpoint ' : '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.indigo,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                     SliderWidget(
                       label: 'TDS A Time',
                       value: tdsATime,
@@ -499,6 +774,55 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         _updateApi('v15', value);
                       },
                     ),
+                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Container(
+                                  width:
+                                      380, // Adjust the size of the container as needed
+                                  height: 380,
+                                  child:
+
+                                      /*Text(
+                                        '$winddirectionapi2', // Use the appropriate variable
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.indigo,
+                                        ),
+                                      ),*/
+
+                                      Stack(
+                                    children: <Widget>[
+                                      Positioned(
+                                        top: 64, // adjust as needed
+                                        left: 41, // adjust as needed
+                                        child: Transform.rotate(
+                                          angle: _getRotationAngle(winddirectionapi),
+                                          child: Lottie.asset(
+                                            'assets/west_north.json',
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 380, // specify the width
+                                        height: 380, // specify the height
+                                        child: Lottie.asset(
+                                          'assets/wind_dir_animation.json',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -507,6 +831,44 @@ class _TemperaturePageState extends State<TemperaturePage> {
         ),
       ),
     );
+  }
+ double _getRotationAngle(String windDirectionapi2) {
+    switch (winddirectionapi) {
+      case 'N':
+        return 0.50;//0.50
+      case 'NNE':
+        return 0.97;//0.97
+      case 'NE':
+        return 1.35;//1.35
+      case 'ENE':
+        return 1.75;//1.75
+      case 'E':
+        return 2.11;//2.11
+      case 'ESE':
+        return 2.41;//2.41
+      case 'SE':
+        return 2.85;//2.85
+      case 'SSE':
+        return 3.25;//3.25
+      case 'S':
+        return 3.65;//3.65
+      case 'SSW':
+        return 4.0;//4.0
+      case 'SW':
+        return 4.40;//4.40
+      case 'WSW':
+        return 4.80;//4.80
+      case 'W':
+        return 5.19;//5.19
+      case 'WNW':
+        return 5.53;//5.53
+      case 'NW':
+        return 5.99;//5.99
+      case 'NNW':
+        return 6.40;//6.40
+      default:
+        return 0.0;
+    }
   }
 }
 
