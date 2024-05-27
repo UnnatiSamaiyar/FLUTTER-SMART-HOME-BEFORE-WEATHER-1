@@ -6,7 +6,24 @@ import 'dart:async';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 void main() {
-  runApp(const MaterialApp(home: TemperaturePage(temperatureApi: '', tdsApi: '', humidityApi: '', phApi: '', baseurlApi: '', tokenApi: '',)));
+  runApp(const MaterialApp(
+    home: TemperaturePage(
+      temperatureApi: '',
+      tdsApi: '',
+      humidityApi: '',
+      phApi: '',
+      baseurlApi: '',
+      tokenApi: '',
+      windspeedapi: '',
+      raincountapi: '',
+      winddirectionapi: '',
+      iaqapi: '',
+      co2api: '',
+      breathvocapi: '',
+      pressureapi: '',
+      dewpointapi: '',
+    ),
+  ));
 }
 
 class TemperaturePage extends StatefulWidget {
@@ -18,14 +35,31 @@ class TemperaturePage extends StatefulWidget {
     required this.humidityApi,
     required this.baseurlApi,
     required this.tokenApi,
+    required this.windspeedapi,
+    required this.raincountapi,
+    required this.winddirectionapi,
+    required this.iaqapi,
+    required this.co2api,
+    required this.breathvocapi,
+    required this.pressureapi,
+    required this.dewpointapi,
   }) : super(key: key);
 
   final String temperatureApi;
   final String tdsApi;
-  final String humidityApi;
   final String phApi;
+  final String humidityApi;
   final String baseurlApi;
   final String tokenApi;
+  final String windspeedapi;
+  final String raincountapi;
+  final String winddirectionapi;
+  final String iaqapi;
+  final String co2api;
+  final String breathvocapi;
+  final String pressureapi;
+  final String dewpointapi;
+
   @override
   _TemperaturePageState createState() => _TemperaturePageState();
 }
@@ -38,7 +72,15 @@ class _TemperaturePageState extends State<TemperaturePage> {
   double maximumTemperature = 50;
   double maximumTDS = 4000;
   double maximumHumidity = 100;
-  double maximumPH = 100;
+  double maximumPH = 14;
+  double windspeed = 0;
+  double raincount = 0;
+  double winddirection = 0;
+  double iaq = 0;
+  double co2 = 0;
+  double breathvoc = 0;
+  double pressure = 0;
+  double dewpoint = 0;
 
   double tdsATime = 0;
   double tdsBTime = 0;
@@ -62,34 +104,136 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
   Future<void> _fetchData() async {
     try {
-      final temperatureResponse = await http.get(Uri.parse(widget.temperatureApi));
-      final tdsResponse = await http.get(Uri.parse(widget.tdsApi));
-      final humidityResponse = await http.get(Uri.parse(widget.humidityApi));
-      final phResponse = await http.get(Uri.parse(widget.phApi));
+      if (widget.temperatureApi.isNotEmpty) {
+        final temperatureResponse =
+            await http.get(Uri.parse(widget.temperatureApi));
+        if (temperatureResponse.statusCode == 200) {
+          final temperatureData = json.decode(temperatureResponse.body);
+          final fetchedTemperature = double.parse(temperatureData.toString());
+          setState(() {
+            temperature = fetchedTemperature;
+          });
+        }
+      }
 
-      if (temperatureResponse.statusCode == 200 &&
-          tdsResponse.statusCode == 200 &&
-          humidityResponse.statusCode == 200 &&
-          phResponse.statusCode == 200) {
-        final temperatureData = json.decode(temperatureResponse.body);
-        final tdsData = json.decode(tdsResponse.body);
-        final humidityData = json.decode(humidityResponse.body);
-        final phData = json.decode(phResponse.body);
+      if (widget.tdsApi.isNotEmpty) {
+        final tdsResponse = await http.get(Uri.parse(widget.tdsApi));
+        if (tdsResponse.statusCode == 200) {
+          final tdsData = json.decode(tdsResponse.body);
+          final fetchedTDS = double.parse(tdsData.toString());
+          setState(() {
+            tds = fetchedTDS;
+          });
+        }
+      }
 
-        final fetchedTemperature = double.parse(temperatureData.toString());
-        final fetchedTDS = double.parse(tdsData.toString());
-        final fetchedHumidity = double.parse(humidityData.toString());
-        final fetchedPH = double.parse(phData.toString());
+      if (widget.humidityApi.isNotEmpty) {
+        final humidityResponse = await http.get(Uri.parse(widget.humidityApi));
+        if (humidityResponse.statusCode == 200) {
+          final humidityData = json.decode(humidityResponse.body);
+          final fetchedHumidity = double.parse(humidityData.toString());
+          setState(() {
+            humidity = fetchedHumidity;
+          });
+        }
+      }
 
-        setState(() {
-          temperature = fetchedTemperature;
-          tds = fetchedTDS;
-          humidity = fetchedHumidity;
-          ph = fetchedPH;
-        });
-      } else {
-        if (kDebugMode) {
-          print('Error fetching data');
+      if (widget.phApi.isNotEmpty) {
+        final phResponse = await http.get(Uri.parse(widget.phApi));
+        if (phResponse.statusCode == 200) {
+          final phData = json.decode(phResponse.body);
+          final fetchedPH = double.parse(phData.toString());
+          setState(() {
+            ph = fetchedPH;
+          });
+        }
+      }
+      if (widget.windspeedapi.isNotEmpty) {
+        final windspeedResponse =
+            await http.get(Uri.parse(widget.windspeedapi));
+        if (windspeedResponse.statusCode == 200) {
+          final windspeedData = json.decode(windspeedResponse.body);
+          final fetchedwindspeed = double.parse(windspeedData.toString());
+          setState(() {
+            windspeed = fetchedwindspeed;
+          });
+        }
+      }
+      if (widget.raincountapi.isNotEmpty) {
+        final raincountResponse =
+            await http.get(Uri.parse(widget.raincountapi));
+        if (raincountResponse.statusCode == 200) {
+          final raincountData = json.decode(raincountResponse.body);
+          final fetchedraincount = double.parse(raincountData.toString());
+          setState(() {
+            raincount = fetchedraincount;
+          });
+        }
+      }
+      if (widget.winddirectionapi.isNotEmpty) {
+        final winddirectionResponse =
+            await http.get(Uri.parse(widget.raincountapi));
+        if (winddirectionResponse.statusCode == 200) {
+          final winddirectionData = json.decode(winddirectionResponse.body);
+          final fetchedwinddirection = double.parse(winddirectionData.toString());
+          setState(() {
+            winddirection = fetchedwinddirection;
+          });
+        }
+      }
+      if (widget.iaqapi.isNotEmpty) {
+        final iaqResponse =
+            await http.get(Uri.parse(widget.raincountapi));
+        if (iaqResponse.statusCode == 200) {
+          final iaqData = json.decode(iaqResponse.body);
+          final fetchediaq = double.parse(iaqData.toString());
+          setState(() {
+            iaq = fetchediaq;
+          });
+        }
+      }
+      if (widget.co2api.isNotEmpty) {
+        final co2Response =
+            await http.get(Uri.parse(widget.co2api));
+        if (co2Response.statusCode == 200) {
+          final co2Data = json.decode(co2Response.body);
+          final fetchedco2 = double.parse(co2Data.toString());
+          setState(() {
+            co2 = fetchedco2;
+          });
+        }
+      }
+      if (widget.breathvocapi.isNotEmpty) {
+        final breathvocResponse =
+            await http.get(Uri.parse(widget.breathvocapi));
+        if (breathvocResponse.statusCode == 200) {
+          final breathvocData = json.decode(breathvocResponse.body);
+          final fetchedbreathvoc = double.parse(breathvocData.toString());
+          setState(() {
+            breathvoc = fetchedbreathvoc;
+          });
+        }
+      }
+      if (widget.pressureapi.isNotEmpty) {
+        final pressureResponse =
+            await http.get(Uri.parse(widget.pressureapi));
+        if (pressureResponse.statusCode == 200) {
+          final pressureData = json.decode(pressureResponse.body);
+          final fetchedpressure = double.parse(pressureData.toString());
+          setState(() {
+            pressure = fetchedpressure;
+          });
+        }
+      }
+      if (widget.dewpointapi.isNotEmpty) {
+        final dewpointResponse =
+            await http.get(Uri.parse(widget.dewpointapi));
+        if (dewpointResponse.statusCode == 200) {
+          final dewpointData = json.decode(dewpointResponse.body);
+          final fetcheddewpoint = double.parse(dewpointData.toString());
+          setState(() {
+            dewpoint = fetcheddewpoint;
+          });
         }
       }
     } catch (error) {
@@ -166,14 +310,20 @@ class _TemperaturePageState extends State<TemperaturePage> {
                               CircularPercentIndicator(
                                 radius: 180,
                                 lineWidth: 14,
-                                percent: temperature > 0 ? temperature / maximumTemperature : 0,
+                                percent: temperature > 0
+                                    ? temperature / maximumTemperature
+                                    : 0,
                                 progressColor: Colors.indigo,
                                 center: Text(
-                                  temperature > 0 ? '$temperature\u00B0' : 'Connect Sensor',
+                                  temperature > 0
+                                      ? '$temperature\u00B0'
+                                      : 'Connect Sensor',
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
-                                    color: temperature > 0 ? Colors.black : Colors.red,
+                                    color: temperature > 0
+                                        ? Colors.black
+                                        : Colors.red,
                                   ),
                                 ),
                               ),
@@ -188,10 +338,6 @@ class _TemperaturePageState extends State<TemperaturePage> {
                             ],
                           ),
                         ),
-                       
-                       
-                       
-                       
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(
@@ -223,10 +369,6 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         ),
                       ],
                     ),
-                   
-                   
-                   
-                   
                     const SizedBox(height: 32),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -237,14 +379,20 @@ class _TemperaturePageState extends State<TemperaturePage> {
                               CircularPercentIndicator(
                                 radius: 180,
                                 lineWidth: 14,
-                                percent: humidity > 0 ? humidity / maximumHumidity : 0,
+                                percent: humidity > 0
+                                    ? humidity / maximumHumidity
+                                    : 0,
                                 progressColor: Colors.green,
                                 center: Text(
-                                  humidity > 0 ? '$humidity %' : 'Connect Sensor',
+                                  humidity > 0
+                                      ? '$humidity %'
+                                      : 'Connect Sensor',
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
-                                    color: humidity > 0 ? Colors.black : Colors.red,
+                                    color: humidity > 0
+                                        ? Colors.black
+                                        : Colors.red,
                                   ),
                                 ),
                               ),
@@ -259,8 +407,6 @@ class _TemperaturePageState extends State<TemperaturePage> {
                             ],
                           ),
                         ),
-                        
-                        
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(
@@ -292,13 +438,19 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         ),
                       ],
                     ),
-
-
-
-                    
-                    // Add sliders here
+                    const SizedBox(height: 32),
                     SliderWidget(
                       label: 'TDS A Time',
+                      value: tdsATime,
+                      onChanged: (value) {
+                        setState(() {
+                          tdsATime = value;
+                        });
+                        _updateApi('v13', value);
+                      },
+                    ),
+                    SliderWidget(
+                      label: 'TDS B Time',
                       value: tdsATime,
                       onChanged: (value) {
                         setState(() {
