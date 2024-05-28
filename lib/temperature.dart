@@ -61,7 +61,6 @@ class TemperaturePage extends StatefulWidget {
   final String breathvocapi;
   final String pressureapi;
   final String dewpointapi;
-  
 
   @override
   _TemperaturePageState createState() => _TemperaturePageState();
@@ -98,6 +97,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
   double tsCTime = 0;
   double temperatureSet = 0;
   double dosingRest = 0;
+
+  late String winddirectionapi = '';
 
   @override
   void initState() {
@@ -284,6 +285,13 @@ class _TemperaturePageState extends State<TemperaturePage> {
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          winddirectionapi = data['current']['wind_dir'];
+        });
+      }
+
       if (response.statusCode != 200) {
         if (kDebugMode) {
           print('Error updating API: ${response.statusCode}');
@@ -341,57 +349,60 @@ class _TemperaturePageState extends State<TemperaturePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent: _clampValue(
-                                        temperature, maximumTemperature) /
-                                    maximumTemperature,
-                                progressColor: Colors.indigo,
-                                center: Text(
-                                  temperature > 0 ? '$temperature\u00B0' : '',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: temperature > 0
-                                        ? Colors.black
-                                        : Colors.red,
+                        if (temperature > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent: _clampValue(
+                                          temperature, maximumTemperature) /
+                                      maximumTemperature,
+                                  progressColor: Colors.indigo,
+                                  center: Text(
+                                    temperature > 0 ? '$temperature\u00B0' : '',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: temperature > 0
+                                          ? Colors.black
+                                          : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                temperature > 0 ? 'Temperature' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.indigo,
+                                const SizedBox(height: 8),
+                                Text(
+                                  temperature > 0 ? 'Temperature' : '',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.indigo,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent:
-                                    _clampValue(tds, maximumTDS) / maximumTDS,
-                                progressColor: Colors.orange,
-                                center: Text(
-                                  tds > 0 ? '$tds TDS' : '',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: tds > 0 ? Colors.black : Colors.red,
+                              if (tds > 0)
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent:
+                                      _clampValue(tds, maximumTDS) / maximumTDS,
+                                  progressColor: Colors.orange,
+                                  center: Text(
+                                    tds > 0 ? '$tds TDS' : '',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          tds > 0 ? Colors.black : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
                               const SizedBox(height: 8),
                               Text(
                                 tds > 0 ? 'TDS' : '',
@@ -412,24 +423,25 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         Expanded(
                           child: Column(
                             children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent:
-                                    _clampValue(humidity, maximumHumidity) /
-                                        maximumHumidity,
-                                progressColor: Colors.green,
-                                center: Text(
-                                  humidity > 0 ? '$humidity %' : '',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: humidity > 0
-                                        ? Colors.black
-                                        : Colors.red,
+                              if (humidity > 0)
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent:
+                                      _clampValue(humidity, maximumHumidity) /
+                                          maximumHumidity,
+                                  progressColor: Colors.green,
+                                  center: Text(
+                                    humidity > 0 ? '$humidity %' : '',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: humidity > 0
+                                          ? Colors.black
+                                          : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
                               const SizedBox(height: 8),
                               Text(
                                 humidity > 0 ? 'Humidity' : '',
@@ -445,20 +457,22 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         Expanded(
                           child: Column(
                             children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent: _clampValue(ph, maximumPH) / maximumPH,
-                                progressColor: Colors.blue,
-                                center: Text(
-                                  ph > 0 ? '$ph pH' : '',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: ph > 0 ? Colors.black : Colors.red,
+                              if (ph > 0)
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent:
+                                      _clampValue(ph, maximumPH) / maximumPH,
+                                  progressColor: Colors.blue,
+                                  center: Text(
+                                    ph > 0 ? '$ph pH' : '',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: ph > 0 ? Colors.black : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
                               const SizedBox(height: 8),
                               Text(
                                 ph > 0 ? 'pH' : '',
@@ -479,27 +493,28 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         Expanded(
                           child: Column(
                             children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent:
-                                    _clampValue(windspeed, maximumWindspeed) /
-                                        maximumWindspeed,
-                                progressColor: Colors.green,
-                                center: Text(
-                                  humidity > 0 ? '$windspeed  %' : '',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: windspeed >= 0
-                                        ? Colors.black
-                                        : Colors.red,
+                              if (windspeed > 0)
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent:
+                                      _clampValue(windspeed, maximumWindspeed) /
+                                          maximumWindspeed,
+                                  progressColor: Colors.green,
+                                  center: Text(
+                                    humidity > 0 ? '$windspeed  %' : '',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: windspeed >= 0
+                                          ? Colors.black
+                                          : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
                               const SizedBox(height: 8),
                               Text(
-                                windspeed >= 0 ? 'Wind-speed ' : '',
+                                windspeed > 0 ? 'Wind-speed ' : '',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   color: Colors.green,
@@ -512,23 +527,25 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         Expanded(
                           child: Column(
                             children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent: _clampValue(raincount, maximumPH) /
-                                    maximumPH,
-                                progressColor: Colors.blue,
-                                center: Text(
-                                  raincount >= 0
-                                      ? '$raincount  Rain-count '
-                                      : '',
-                                  style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: ph >= 0 ? Colors.black : Colors.red,
+                              if (raincount > 0)
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent: _clampValue(raincount, maximumPH) /
+                                      maximumPH,
+                                  progressColor: Colors.blue,
+                                  center: Text(
+                                    raincount >= 0
+                                        ? '$raincount  Rain-count '
+                                        : '',
+                                    style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          ph >= 0 ? Colors.black : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
                               const SizedBox(height: 8),
                               Text(
                                 raincount > 0 ? 'Rain-count' : '',
@@ -546,54 +563,58 @@ class _TemperaturePageState extends State<TemperaturePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent:
-                                    _clampValue(iaq, maximumIAQ) / maximumIAQ,
-                                progressColor: Colors.indigo,
-                                center: Text(
-                                  iaq >= 0 ? '$iaq %' : '',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: iaq >= 0 ? Colors.black : Colors.red,
+                        if (iaq > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent:
+                                      _clampValue(iaq, maximumIAQ) / maximumIAQ,
+                                  progressColor: Colors.indigo,
+                                  center: Text(
+                                    iaq >= 0 ? '$iaq %' : '',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          iaq >= 0 ? Colors.black : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                iaq >= 0 ? 'IAQ ' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.indigo,
+                                const SizedBox(height: 8),
+                                Text(
+                                  iaq >= 0 ? 'IAQ ' : '',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.indigo,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent:
-                                    _clampValue(co2, maximumCO2) / maximumCO2,
-                                progressColor: Colors.orange,
-                                center: Text(
-                                  co2 >= 0 ? '$co2  ppm' : '',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: co2 >= 0 ? Colors.black : Colors.red,
+                              if (co2 > 0)
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent:
+                                      _clampValue(co2, maximumCO2) / maximumCO2,
+                                  progressColor: Colors.orange,
+                                  center: Text(
+                                    co2 >= 0 ? '$co2  ppm' : '',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          co2 >= 0 ? Colors.black : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
                               const SizedBox(height: 8),
                               Text(
                                 co2 > 0 ? 'CO2 ' : '',
@@ -614,24 +635,25 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         Expanded(
                           child: Column(
                             children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent:
-                                    _clampValue(breathvoc, maximumBreathVOC) /
-                                        maximumBreathVOC,
-                                progressColor: Colors.indigo,
-                                center: Text(
-                                  breathvoc >= 0 ? '$breathvoc  %' : '',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: breathvoc >= 0
-                                        ? Colors.black
-                                        : Colors.red,
+                              if (breathvoc > 0)
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent:
+                                      _clampValue(breathvoc, maximumBreathVOC) /
+                                          maximumBreathVOC,
+                                  progressColor: Colors.indigo,
+                                  center: Text(
+                                    breathvoc >= 0 ? '$breathvoc  %' : '',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: breathvoc >= 0
+                                          ? Colors.black
+                                          : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
                               const SizedBox(height: 8),
                               Text(
                                 breathvoc >= 0 ? 'BreathVoc ' : '',
@@ -647,22 +669,24 @@ class _TemperaturePageState extends State<TemperaturePage> {
                         Expanded(
                           child: Column(
                             children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent:
-                                    _clampValue(pressure, maximumPressure) /
-                                        maximumPressure,
-                                progressColor: Colors.orange,
-                                center: Text(
-                                  pressure >= 0 ? '$pressure Pa' : '',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: co2 >= 0 ? Colors.black : Colors.red,
+                              if (pressure > 0)
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent:
+                                      _clampValue(pressure, maximumPressure) /
+                                          maximumPressure,
+                                  progressColor: Colors.orange,
+                                  center: Text(
+                                    pressure >= 0 ? '$pressure Pa' : '',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          co2 >= 0 ? Colors.black : Colors.red,
+                                    ),
                                   ),
                                 ),
-                              ),
                               const SizedBox(height: 8),
                               Text(
                                 pressure > 0 ? 'Pressure ' : '',
@@ -801,7 +825,8 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                         top: 64, // adjust as needed
                                         left: 41, // adjust as needed
                                         child: Transform.rotate(
-                                          angle: _getRotationAngle(winddirectionapi),
+                                          angle:
+                                              _getRotationAngle(winddirectionapi),
                                           child: Lottie.asset(
                                             'assets/west_north.json',
                                             fit: BoxFit.contain,
@@ -832,40 +857,41 @@ class _TemperaturePageState extends State<TemperaturePage> {
       ),
     );
   }
- double _getRotationAngle(String windDirectionapi2) {
-    switch (winddirectionapi) {
+
+  double _getRotationAngle(String windDirectionapi2) {
+    switch (windDirectionapi2) {
       case 'N':
-        return 0.50;//0.50
+        return 0.50; //0.50
       case 'NNE':
-        return 0.97;//0.97
+        return 0.97; //0.97
       case 'NE':
-        return 1.35;//1.35
+        return 1.35; //1.35
       case 'ENE':
-        return 1.75;//1.75
+        return 1.75; //1.75
       case 'E':
-        return 2.11;//2.11
+        return 2.11; //2.11
       case 'ESE':
-        return 2.41;//2.41
+        return 2.41; //2.41
       case 'SE':
-        return 2.85;//2.85
+        return 2.85; //2.85
       case 'SSE':
-        return 3.25;//3.25
+        return 3.25; //3.25
       case 'S':
-        return 3.65;//3.65
+        return 3.65; //3.65
       case 'SSW':
-        return 4.0;//4.0
+        return 4.0; //4.0
       case 'SW':
-        return 4.40;//4.40
+        return 4.40; //4.40
       case 'WSW':
-        return 4.80;//4.80
+        return 4.80; //4.80
       case 'W':
-        return 5.19;//5.19
+        return 5.19; //5.19
       case 'WNW':
-        return 5.53;//5.53
+        return 5.53; //5.53
       case 'NW':
-        return 5.99;//5.99
+        return 5.99; //5.99
       case 'NNW':
-        return 6.40;//6.40
+        return 6.40; //6.40
       default:
         return 0.0;
     }
