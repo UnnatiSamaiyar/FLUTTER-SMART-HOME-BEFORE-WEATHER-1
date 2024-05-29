@@ -349,6 +349,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // Only include the temperature column if the temperature is greater than 0
                         if (temperature > 0)
                           Expanded(
                             child: Column(
@@ -361,19 +362,17 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       maximumTemperature,
                                   progressColor: Colors.indigo,
                                   center: Text(
-                                    temperature > 0 ? '$temperature\u00B0' : '',
+                                    '$temperature\u00B0',
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
-                                      color: temperature > 0
-                                          ? Colors.black
-                                          : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  temperature > 0 ? 'Temperature' : '',
+                                  'Temperature',
                                   style: const TextStyle(
                                     fontSize: 18,
                                     color: Colors.indigo,
@@ -382,11 +381,16 @@ class _TemperaturePageState extends State<TemperaturePage> {
                               ],
                             ),
                           ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              if (tds > 0)
+
+                        // Include the spacing only if both temperature and TDS values are greater than 0
+                        if (temperature > 0 && tds > 0)
+                          const SizedBox(width: 16),
+
+                        // Only include the TDS column if the TDS value is greater than 0
+                        if (tds > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
                                 CircularPercentIndicator(
                                   radius: 180,
                                   lineWidth: 14,
@@ -394,36 +398,36 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       _clampValue(tds, maximumTDS) / maximumTDS,
                                   progressColor: Colors.orange,
                                   center: Text(
-                                    tds > 0 ? '$tds TDS' : '',
+                                    '$tds TDS',
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
-                                      color:
-                                          tds > 0 ? Colors.black : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 8),
-                              Text(
-                                tds > 0 ? 'TDS' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.orange,
+                                const SizedBox(height: 8),
+                                Text(
+                                  'TDS',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.orange,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     const SizedBox(height: 32),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              if (humidity > 0)
+                        // Only include the humidity column if the humidity is greater than 0
+                        if (humidity > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
                                 CircularPercentIndicator(
                                   radius: 180,
                                   lineWidth: 14,
@@ -432,32 +436,34 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                           maximumHumidity,
                                   progressColor: Colors.green,
                                   center: Text(
-                                    humidity > 0 ? '$humidity %' : '',
+                                    '$humidity %',
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
-                                      color: humidity > 0
-                                          ? Colors.black
-                                          : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 8),
-                              Text(
-                                humidity > 0 ? 'Humidity' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.green,
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Humidity',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.green,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              if (ph > 0)
+
+                        // Include the spacing only if both humidity and pH values are greater than 0
+                        if (humidity > 0 && ph > 0) const SizedBox(width: 16),
+
+                        // Only include the pH column if the pH value is greater than 0
+                        if (ph > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
                                 CircularPercentIndicator(
                                   radius: 180,
                                   lineWidth: 14,
@@ -465,35 +471,36 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       _clampValue(ph, maximumPH) / maximumPH,
                                   progressColor: Colors.blue,
                                   center: Text(
-                                    ph > 0 ? '$ph pH' : '',
+                                    '$ph pH',
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
-                                      color: ph > 0 ? Colors.black : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 8),
-                              Text(
-                                ph > 0 ? 'pH' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.blue,
+                                const SizedBox(height: 8),
+                                Text(
+                                  'pH',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.blue,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     const SizedBox(height: 32),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              if (windspeed > 0)
+                        // Only include the windspeed column if the windspeed is greater than 0
+                        if (windspeed > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
                                 CircularPercentIndicator(
                                   radius: 180,
                                   lineWidth: 14,
@@ -502,67 +509,69 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                           maximumWindspeed,
                                   progressColor: Colors.green,
                                   center: Text(
-                                    humidity > 0 ? '$windspeed  %' : '',
+                                    '$windspeed %',
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
-                                      color: windspeed >= 0
-                                          ? Colors.black
-                                          : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 8),
-                              Text(
-                                windspeed > 0 ? 'Wind-speed ' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.green,
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Wind-speed',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.green,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              if (raincount > 0)
+
+                        // Include the spacing only if both windspeed and raincount values are greater than 0
+                        if (windspeed > 0 && raincount > 0)
+                          const SizedBox(width: 16),
+
+                        // Only include the raincount column if the raincount is greater than 0
+                        if (raincount > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
                                 CircularPercentIndicator(
                                   radius: 180,
                                   lineWidth: 14,
-                                  percent: _clampValue(raincount, maximumPH) /
-                                      maximumPH,
+                                  percent:
+                                      _clampValue(raincount, maximumRaincount) /
+                                          maximumRaincount,
                                   progressColor: Colors.blue,
                                   center: Text(
-                                    raincount >= 0
-                                        ? '$raincount  Rain-count '
-                                        : '',
+                                    '$raincount Rain-count',
                                     style: TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
-                                      color:
-                                          ph >= 0 ? Colors.black : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 8),
-                              Text(
-                                raincount > 0 ? 'Rain-count' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.blue,
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Rain-count',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.blue,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     const SizedBox(height: 32),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // Only include the IAQ column if the IAQ is greater than 0
                         if (iaq > 0)
                           Expanded(
                             child: Column(
@@ -574,18 +583,17 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       _clampValue(iaq, maximumIAQ) / maximumIAQ,
                                   progressColor: Colors.indigo,
                                   center: Text(
-                                    iaq >= 0 ? '$iaq %' : '',
+                                    '$iaq %',
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
-                                      color:
-                                          iaq >= 0 ? Colors.black : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  iaq >= 0 ? 'IAQ ' : '',
+                                  'IAQ',
                                   style: const TextStyle(
                                     fontSize: 18,
                                     color: Colors.indigo,
@@ -594,11 +602,15 @@ class _TemperaturePageState extends State<TemperaturePage> {
                               ],
                             ),
                           ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              if (co2 > 0)
+
+                        // Include the spacing only if both IAQ and CO2 values are greater than 0
+                        if (iaq > 0 && co2 > 0) const SizedBox(width: 16),
+
+                        // Only include the CO2 column if the CO2 is greater than 0
+                        if (co2 > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
                                 CircularPercentIndicator(
                                   radius: 180,
                                   lineWidth: 14,
@@ -606,36 +618,36 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                       _clampValue(co2, maximumCO2) / maximumCO2,
                                   progressColor: Colors.orange,
                                   center: Text(
-                                    co2 >= 0 ? '$co2  ppm' : '',
+                                    '$co2 ppm',
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
-                                      color:
-                                          co2 >= 0 ? Colors.black : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 8),
-                              Text(
-                                co2 > 0 ? 'CO2 ' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.orange,
+                                const SizedBox(height: 8),
+                                Text(
+                                  'CO2',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.orange,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     const SizedBox(height: 32),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              if (breathvoc > 0)
+                        // Only include the breathVOC column if breathVOC is greater than 0
+                        if (breathvoc > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
                                 CircularPercentIndicator(
                                   radius: 180,
                                   lineWidth: 14,
@@ -644,32 +656,35 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                           maximumBreathVOC,
                                   progressColor: Colors.indigo,
                                   center: Text(
-                                    breathvoc >= 0 ? '$breathvoc  %' : '',
+                                    '$breathvoc %',
                                     style: TextStyle(
                                       fontSize: 32,
                                       fontWeight: FontWeight.bold,
-                                      color: breathvoc >= 0
-                                          ? Colors.black
-                                          : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 8),
-                              Text(
-                                breathvoc >= 0 ? 'BreathVoc ' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.indigo,
+                                const SizedBox(height: 8),
+                                Text(
+                                  'BreathVoc',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.indigo,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            children: [
-                              if (pressure > 0)
+
+                        // Include the spacing only if both breathVOC and pressure values are greater than 0
+                        if (breathvoc > 0 && pressure > 0)
+                          const SizedBox(width: 16),
+
+                        // Only include the pressure column if the pressure is greater than 0
+                        if (pressure > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
                                 CircularPercentIndicator(
                                   radius: 180,
                                   lineWidth: 14,
@@ -678,64 +693,63 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                           maximumPressure,
                                   progressColor: Colors.orange,
                                   center: Text(
-                                    pressure >= 0 ? '$pressure Pa' : '',
+                                    '$pressure Pa',
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
-                                      color:
-                                          co2 >= 0 ? Colors.black : Colors.red,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ),
-                              const SizedBox(height: 8),
-                              Text(
-                                pressure > 0 ? 'Pressure ' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.orange,
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Pressure',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.orange,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     const SizedBox(height: 32),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              CircularPercentIndicator(
-                                radius: 180,
-                                lineWidth: 14,
-                                percent:
-                                    _clampValue(dewpoint, maximumDewpoint) /
-                                        maximumDewpoint,
-                                progressColor: Colors.indigo,
-                                center: Text(
-                                  dewpoint >= 0 ? '$dewpoint   %' : '',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: dewpoint >= 0
-                                        ? Colors.black
-                                        : Colors.red,
+                        // Only include the dewpoint column if the dewpoint is greater than 0
+                        if (dewpoint > 0)
+                          Expanded(
+                            child: Column(
+                              children: [
+                                CircularPercentIndicator(
+                                  radius: 180,
+                                  lineWidth: 14,
+                                  percent:
+                                      _clampValue(dewpoint, maximumDewpoint) /
+                                          maximumDewpoint,
+                                  progressColor: Colors.indigo,
+                                  center: Text(
+                                    '$dewpoint %',
+                                    style: TextStyle(
+                                      fontSize: 32,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                dewpoint >= 0 ? 'Dewpoint ' : '',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.indigo,
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Dewpoint',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.indigo,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     SliderWidget(
@@ -823,10 +837,10 @@ class _TemperaturePageState extends State<TemperaturePage> {
                                     children: <Widget>[
                                       Positioned(
                                         top: 64, // adjust as needed
-                                        left: 41, // adjust as needed
+                                        left: 64, // adjust as needed
                                         child: Transform.rotate(
-                                          angle:
-                                              _getRotationAngle(winddirectionapi),
+                                          angle: _getRotationAngle(
+                                              winddirectionapi),
                                           child: Lottie.asset(
                                             'assets/west_north.json',
                                             fit: BoxFit.contain,
