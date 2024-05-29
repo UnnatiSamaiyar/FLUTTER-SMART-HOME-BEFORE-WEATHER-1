@@ -205,14 +205,14 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 28),
                     // Display the API values at the bottom
                     const SizedBox(height: 28),
-                    const Text(
+                    /*const Text(
                       'API Values:',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    const SizedBox(height: 8),
+                    ),*/
+                    /*const SizedBox(height: 8),
                     if (widget.temperatureApi.isNotEmpty)
                       Text('Temperature API: ${widget.temperatureApi}'),
                     if (widget.tdsApi.isNotEmpty)
@@ -240,7 +240,7 @@ class _HomePageState extends State<HomePage> {
                     if (widget.pressureapi.isNotEmpty)
                       Text('pressure API: ${widget.pressureapi}'),
                     if (widget.dewpointapi.isNotEmpty)
-                      Text('dewpoint API: ${widget.dewpointapi}'),
+                      Text('dewpoint API: ${widget.dewpointapi}'),*/
                   ],
                 ),
               ),
