@@ -1,0 +1,26 @@
+{
+    "records": [
+      {
+        "fields": {
+          "username": "TataWeatherStation",
+          "password": "Tata",
+          "logo1Url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUnk4pMQxO-WWv6-6tWkZ2rOlSeeGMK_prSGLFrVgHIw&s"
+        }
+      },
+      {
+        "fields": {
+          "username": "gurinder",
+          "password": "3456",
+          "logo1Url": "https://bcassetcdn.com/public/blog/wp-content/uploads/2021/11/10190851/Louis-Vuitton-1.png"
+        }
+      },
+      {
+        "fields": {
+          "username": "dheeraj",
+          "password": "123",
+          "logo1Url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjXsP6N_pnnztLypdeYdTBfGwbSxwycBQINFU-WZdQ8w&s"
+        }
+      }
+    ]
+  }
+  
