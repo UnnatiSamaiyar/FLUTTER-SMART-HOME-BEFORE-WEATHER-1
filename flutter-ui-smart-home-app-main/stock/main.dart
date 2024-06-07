@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const TemperaturePage(temperatureApi: '', tdsApi: '', humidityApi: '', phApi: '', baseurlApi: '', tokenApi: '',),
+                                builder: (context) => const TemperaturePage(temperatureApi: '', tdsApi: '', humidityApi: '', phApi: '', baseurlApi: '', tokenApi: '', windspeedapi: '', raincountapi: '', winddirectionapi: '', iaqapi: '', co2api: '', breathvocapi: '', pressureapi: '', dewpointapi: '', dosing1api: '', dosing2api: '', dosing3api: '', dosing4api: '', nftpumpapi: '', aeropumpapi: '',nftdosingapi: '',dwcdosingapi: '', aerodosingapi: '', fanrelayapi: '',padrelayapi: '', fogrelayapi: '',),
                               ),
                             );
                           },

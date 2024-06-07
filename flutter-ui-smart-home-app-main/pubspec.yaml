@@ -29,6 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  lottie: ^1.0.1
   http: ^0.13.3
   gsheets: 0.4.2
   cupertino_icons: ^1.0.2
@@ -37,6 +38,7 @@ dependencies:
   permission_handler: ^10.4.3
   flutter_svg: ^2.0.7
   provider: ^6.0.5
+  path_provider: ^2.1.3
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +84,10 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/west_north.json
+    - assets/wind_dir_animation.json
+    - assets/images/kvknft.png
+    - assets/images/kvkrds.jpeg
   fonts:
     - family: Muli
       fonts:
