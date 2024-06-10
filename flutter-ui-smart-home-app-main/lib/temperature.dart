@@ -817,7 +817,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Only include the breathVOC column if breathVOC is greater than 0
-                        if (dosing1api >= 0)
+                        if (dosing1api > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -850,11 +850,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
                           ),
 
                         // Include the spacing only if both breathVOC and pressure values are greater than 0
-                        if (dosing1api >= 0 && dosing2api >= 0)
+                        if (dosing1api > 0 && dosing2api > 0)
                           const SizedBox(width: 16),
 
                         // Only include the pressure column if the pressure is greater than 0
-                        if (dosing2api >= 0)
+                        if (dosing2api > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -892,7 +892,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Only include the breathVOC column if breathVOC is greater than 0
-                        if (dosing3api >= 0)
+                        if (dosing3api > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -925,11 +925,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
                           ),
 
                         // Include the spacing only if both breathVOC and pressure values are greater than 0
-                        if (dosing3api >= 0 && dosing4api >= 0)
+                        if (dosing3api > 0 && dosing4api > 0)
                           const SizedBox(width: 16),
 
                         // Only include the pressure column if the pressure is greater than 0
-                        if (dosing4api >= 0)
+                        if (dosing4api > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -967,7 +967,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Only include the breathVOC column if breathVOC is greater than 0
-                        if (nftpumpapi >= 0)
+                        if (nftpumpapi > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -1000,11 +1000,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
                           ),
 
                         // Include the spacing only if both breathVOC and pressure values are greater than 0
-                        if (nftpumpapi >= 0 && aeropumpapi >= 0)
+                        if (nftpumpapi > 0 && aeropumpapi > 0)
                           const SizedBox(width: 16),
 
                         // Only include the pressure column if the pressure is greater than 0
-                        if (aeropumpapi >= 0)
+                        if (aeropumpapi > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -1042,7 +1042,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Only include the breathVOC column if breathVOC is greater than 0
-                        if (nftdosingapi >= 0)
+                        if (nftdosingapi > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -1075,11 +1075,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
                           ),
 
                         // Include the spacing only if both breathVOC and pressure values are greater than 0
-                        if (nftdosingapi >= 0 && dwcdosingapi >= 0)
+                        if (nftdosingapi > 0 && dwcdosingapi > 0)
                           const SizedBox(width: 16),
 
                         // Only include the pressure column if the pressure is greater than 0
-                        if (dwcdosingapi >= 0)
+                        if (dwcdosingapi > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -1117,7 +1117,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Only include the breathVOC column if breathVOC is greater than 0
-                        if (aerodosingapi >= 0)
+                        if (aerodosingapi > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -1150,11 +1150,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
                           ),
 
                         // Include the spacing only if both breathVOC and pressure values are greater than 0
-                        if (aerodosingapi >= 0 && fanrelayapi >= 0)
+                        if (aerodosingapi > 0 && fanrelayapi > 0)
                           const SizedBox(width: 16),
 
                         // Only include the pressure column if the pressure is greater than 0
-                        if (fanrelayapi >= 0)
+                        if (fanrelayapi > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -1192,7 +1192,7 @@ class _TemperaturePageState extends State<TemperaturePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Only include the breathVOC column if breathVOC is greater than 0
-                        if (padrelayapi >= 0)
+                        if (padrelayapi > 0)
                           Expanded(
                             child: Column(
                               children: [
@@ -1225,11 +1225,11 @@ class _TemperaturePageState extends State<TemperaturePage> {
                           ),
 
                         // Include the spacing only if both breathVOC and pressure values are greater than 0
-                        if (padrelayapi >= 0 && fogrelayapi >= 0)
+                        if (padrelayapi > 0 && fogrelayapi > 0)
                           const SizedBox(width: 16),
 
                         // Only include the pressure column if the pressure is greater than 0
-                        if (fogrelayapi >= 0)
+                        if (fogrelayapi > 0)
                           Expanded(
                             child: Column(
                               children: [

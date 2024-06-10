@@ -88,6 +88,7 @@ flutter:
     - assets/wind_dir_animation.json
     - assets/images/kvknft.png
     - assets/images/kvkrds.jpeg
+    - assets/images/bodam.jpg
   fonts:
     - family: Muli
       fonts:
